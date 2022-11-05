@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% form_theme formFigure 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <h1>
+            {% if editMode %}
+                Modification
+            {% else %}
+                Création
+            {% endif %}
+                d'une figure
+        </h1>
+
+        {{ form_start(formFigure) }}
+
+        {{ form_row(formFigure.title, {'attr': {'placeholder': 'Le titre de la figure'}}) }}
+        {{ form_row(formFigure.content, {'attr': {'placeholder': 'La description de la figure'}}) }}
+        {{ form_row(formFigure.thumbnail, {'attr': {'placeholder': 'L\'image principale de la figure'}}) }}
+        {{ form_row(formFigure.category) }}
+
+        <button type="submit" class="btn btn-primary">
+            {% if editMode %}
+                Enregistrer la modification
+            {% else %}
+                Ajouter la figure
+            {% endif %}
+        </button>
+
+        {{ form_end(formFigure) }}
+    </div>
+
+
+{% endblock %}

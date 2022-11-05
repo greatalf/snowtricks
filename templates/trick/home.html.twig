@@ -1,44 +1,41 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand" href="#">SNOWTRICKS</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
-                aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarColor01">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Accueil
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Tricks</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Se connecter</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">S'inscrire</a>
-                </li>
-            </ul>
-        </div>
-        
-    </nav>
 
     <div class="top_banner">
         <img src="/assets/medias/mattias-olsson-nQz49efZEFs-unsplash.jpg" alt="">
+        <a href="#figures">
+            <div class="go_back"></div>
+        </a>
     </div>
 
-    <div class="card" style="width:400px">
-        <img class="card-img-top" src="img_avatar1.png" alt="Card image">
-        <div class="card-body">
-            <h4 class="card-title">John Doe</h4>
-            <p class="card-text">Some example text.</p>
-            <a href="#" class="btn btn-primary">See Profile</a>
+    {% for message in app.flashes('success') %}
+        <div id="msg_flash" class="container flash-success">
+            <div class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
         </div>
-    </div>
+    {% endfor %}
+
+    <section id="figures" class="figures">
+        {% for figure in figures %}
+            <div class="card" style="width:300px">
+                <a href="{{ path("trick_show", { id: figure.id }) }}">
+                    <img class="card-img-top" src="{{ figure.thumbnail }}" alt="Card image">
+                </a>
+                <div class="card-body trick_card">
+                    <a href="{{ path("trick_show", { id: figure.id }) }}">
+                        <h6 class="card-title">{{ figure.title }}</h6>
+                    </a>
+                    <div class="edit_trash">
+                        <a href="{{ path("trick_edit", { id: figure.id }) }}"><i class="fa-solid fa-pen"></i></a>
+                        <a href="{{ path("trick_delete", { id: figure.id }) }}"><i class="fa-solid fa-trash-can"></i></a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </section>
+
+
 {% endblock %}

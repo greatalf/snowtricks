@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% form_theme formCategory 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <h1>
+            {% if editMode %}
+                Création
+            {% else %}
+                Modification
+            {% endif %}
+            d'une catégorie
+        </h1>
+
+        {{ form_start(formCategory) }}
+
+        {{ form_row(formCategory.title, {'attr': {'placeholder': 'Le titre de la catégorie'}}) }}
+        {{ form_row(formCategory.description, {'attr': {'placeholder': 'La description de la catégorie'}}) }}
+
+        <button type="submit" class="btn btn-primary">
+            {% if editMode %}
+                Enregistrer la modification
+            {% else %}
+                Ajouter la catégorie
+            {% endif %}
+        </button>
+
+        {{ form_end(formCategory) }}
+    </div>
+
+
+{% endblock %}

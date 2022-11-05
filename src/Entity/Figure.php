@@ -25,7 +25,7 @@ class Figure
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $content;
 
@@ -51,7 +51,7 @@ class Figure
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="figures")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $author;
 

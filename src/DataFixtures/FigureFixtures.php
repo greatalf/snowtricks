@@ -26,37 +26,6 @@ class FigureFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-////        for ($i=1; $i <= 15; $i++)
-////        {
-////            $user = new User();
-////            $user->setEmail("laurent@snowtricks.com")
-////                ->setPassword()
-////                ->setUsername("greatalf")
-////                ->setFirstName("Laurent")
-////                ->setLastName("AVRIL")
-////                ->setAvatar()
-////                ->setConfirmed()
-////                ->setPassword()
-////                ->setToken()
-////
-////            $manager->persist($figure);
-////        }
-////
-////        for ($i=1; $i <= 10; $i++)
-////        {
-////            $figure = new Figure();
-////            $figure->setTitle("Titre figure n° $i")
-////                    ->setContent("Description de figure n° $i")
-////                    ->setThumbnail("http://placehold.it/350x150")
-////                    ->setCreatedAt(new \DateTimeImmutable());
-////
-////            $manager->persist($figure);
-////        }
-////
-////        $manager->flush();
-//
-//
-//
         $faker = \Faker\Factory::create('fr_FR');
 
         //Gestion des users
@@ -74,7 +43,9 @@ class FigureFixtures extends Fixture
 
             $password = $this->encoder->encodePassword($user,'0000');
 
-            $user->setFirstName($faker->firstname)
+            $firstname = $genre == "male" ? $faker->firstNameMale : $faker->firstNameFemale;
+
+            $user->setFirstName($firstname)
                 ->setLastName($faker->lastname)
                 ->setEmail($faker->email)
                 ->setUsername($faker->username)
@@ -89,11 +60,11 @@ class FigureFixtures extends Fixture
 
         }
 
-        // 4 fake categories
+        // 6 fake categories
         for ($i = 1; $i <= 6; $i++) {
             $category = new Category();
             $category->setTitle($faker->word())
-                ->setDescription($faker->paragraph());
+                    ->setDescription($faker->paragraph());
 
             $manager->persist($category);
 
@@ -107,8 +78,9 @@ class FigureFixtures extends Fixture
                 $title = $faker->sentence($nbWords = $nb, $variableNbWords = true);
                 $title = str_replace('.', '', $title);
 
-                $slug = str_replace(' ', '-', $title);
-                $slug = str_replace('\'', '-', $slug);
+//                $slug = str_replace(' ', '-', $title);
+//                $slug = str_replace('\'', '-', $slug);
+                $slug = $this->slugger->slug($title);
 
                 $figure = new Figure();
 
@@ -119,7 +91,7 @@ class FigureFixtures extends Fixture
                     ->setCreatedAt($faker->dateTimeBetween('-6 months'))
                     ->setCategory($category)
                     ->setSlug($slug)
-                    ->setThumbnail($faker->imageUrl())
+                    ->setThumbnail("https://picsum.photos/400/200")
                     ->setAuthor($user);
 
                 $manager->persist($figure);

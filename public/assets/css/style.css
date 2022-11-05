@@ -1,5 +1,55 @@
+html {
+    scroll-behavior: smooth;
+}
+
+.bg-primary {
+    background-color: #375a7f !important;
+}
+
+.top_banner {
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.go_back {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: black;
+    border-radius: 50%;
+    bottom: 80px;
+    right: 80px;
+}
+
 .top_banner img {
     object-fit: cover;
     width: -webkit-fill-available;
     max-height: 100vh;
 }
+
+.trick_card {
+    display: flex;
+    justify-content: space-between;
+}
+.fa-solid {
+    cursor: pointer;
+}
+.edit_trash .fa-pen {
+    margin-right: 10px;
+}
+
+.figures {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 300px);
+    grid-gap: 25px;
+    place-content: center;
+}
+
+footer {
+    height: 100px;
+    margin-top: 40px;
+    background-color: #375A7F;
+    color: #ffffff;
+    padding: 35px;
+}
+
