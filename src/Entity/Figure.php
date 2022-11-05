@@ -30,7 +30,7 @@ class Figure
     private $content;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
@@ -59,6 +59,11 @@ class Figure
      * @ORM\OneToMany(targetEntity=Visual::class, mappedBy="figure")
      */
     private $visuals;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="figures")
+     */
+    private $category;
 
     public function __construct()
     {
@@ -95,12 +100,12 @@ class Figure
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
@@ -199,6 +204,18 @@ class Figure
                 $visual->setFigure(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
