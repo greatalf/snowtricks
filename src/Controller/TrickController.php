@@ -60,13 +60,6 @@ class TrickController extends AbstractController
         if(!$figure)
             $figure = new Figure();
 
-//        $form = $this->createFormBuilder($figure)
-//                    ->add('title')
-//                    ->add('content')
-//                    ->add('thumbnail')
-////                    ->add('category', EntityType::class)
-//                    ->getForm();
-
         $form = $this->createForm(FigureType::class, $figure);
 
         $form->handleRequest($request);

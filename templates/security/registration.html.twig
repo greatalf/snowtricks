@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% form_theme formRegister 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <h1>Inscription</h1>
+
+        {{ form_start(formRegister) }}
+
+        {{ form_row(formRegister.email, {'attr': {'value': 'laurent@gmail.com'}}) }}
+        {{ form_row(formRegister.password, {'attr': {'value': '0000'}}) }}
+        {{ form_row(formRegister.username, {'attr': {'value': 'greatalf'}}) }}
+        {{ form_row(formRegister.description, {'attr': {'value': 'Ma description !!'}}) }}
+        {{ form_row(formRegister.firstName, {'attr': {'value': 'Laurent'}}) }}
+        {{ form_row(formRegister.lastName, {'attr': {'value': 'AVRIL'}}) }}
+        {{ form_row(formRegister.avatar, {'attr': {'value': ''}}) }}
+
+        <button type="submit" class="btn btn-primary">S'inscrire</button>
+        {{ form_end(formRegister) }}
+
+
+{#        {{ form(form) }}#}
+{#        {{ form_start(form) }}#}
+{#        {{ form_widget(form) }}#}
+
+{#        <button type="submit" class="btn btn-primary">#}
+{#            Inscription#}
+{#        </button>#}
+
+{#        {{ form_end(form) }}#}
+
+    </div>
+
+{% endblock %}
