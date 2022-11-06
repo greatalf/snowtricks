@@ -21,12 +21,28 @@
                         {{ comment.author.firstName }} {{ comment.author.lastName }}
                     </div>
                     <div class="content_comment">
-                        {{ comment.content |raw }}
+                        {{ comment.content | raw }}
                     </div>
 
                 </div>
             {% endfor %}
         </div>
-        
+
+        <div class="comment_form">
+
+            {{ form_row(formComment.title, {'attr': {'placeholder': 'Le titre de votre commentaire'}}) }}
+            {{ form_row(formComment.content, {'attr': {'placeholder': 'La description de votre commentaire'}}) }}
+
+            <button type="submit" class="btn btn-primary">
+                {% if editMode %}
+                    Enregistrer la modification
+                {% else %}
+                    Ajouter le commentaire
+                {% endif %}
+            </button>
+
+            {{ form_end(formComment) }}
+        </div>
+
     </article>
 {% endblock %}
