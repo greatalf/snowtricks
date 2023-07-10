@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Category;
 use App\Entity\Figure;
+use App\Entity\User;
 use App\Form\CategoryType;
+use App\Form\CommentType;
 use App\Form\FigureType;
 use App\Helper\Helper;
 use Cocur\Slugify\Slugify;
@@ -15,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 class TrickController extends AbstractController
 {
@@ -89,13 +93,35 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/details/{id}", name="trick_show")
      */
-    public function show($id): Response
+    public function show($id, Request $request, EntityManagerInterface $manager, Security $security): Response
     {
         $repo = $this->registry->getRepository(Figure::class);
         $figure = $repo->find($id);
 
+        /**
+         * Création du formulaire de commentaire
+         */
+        $comment = new Comment();
+        $userRepository = $manager->getRepository(User::class);
+        $user = $security->getUser();
+        $user = $user ?: $userRepository->find(mt_rand(1, 10));
+        $form = $this->createForm(CommentType::class, $comment)->handleRequest($request);
+
+        if( $form->isSubmitted() && $form->isValid() )
+        {
+            $comment->setCreatedAt(new \DateTime());
+            $comment->setFigures($figure);
+            $comment->setAuthor($user);
+
+            $manager->persist($comment);
+
+            $manager->flush();
+        }
+
         return $this->render('trick/show.html.twig', [
-            'figure' => $figure
+            'figure' => $figure,
+            'formComment' => $form->createView(),
+            'editMode' => null
         ]);
     }
 
@@ -105,23 +131,30 @@ class TrickController extends AbstractController
      */
     public function categoryForm(Category $category = null, Request $request, EntityManagerInterface $manager): Response
     {
-        $form = $this->createForm(CategoryType::class, $category);
-
         if(!$category)
             $category = new Category();
 
+        $form = $this->createForm(CategoryType::class, $category);
+
         $form->handleRequest($request);
+
+        $isNewCategory = !$this->helper->entityExists($category);
 
         if( $form->isSubmitted() && $form->isValid() )
         {
             $slugify = new Slugify();
-            $category->setSlug( $slugify->slugify( $category->getTitle() ) );
 
             $manager->persist($category);
+
+            $category->setSlug( $slugify->slugify( $category->getTitle() ) );
+
             $manager->flush();
 
+            $categoryFlashMsg = 'La catégorie a bien été ';
+            $categoryFlashMsg .= $isNewCategory ? 'crée' : 'modifiée';
+
             if($this->helper->entityExists($category))
-                $this->addFlash('success', 'La catégorie a bien été modifiée');
+                $this->addFlash('success', $categoryFlashMsg);
 
             return $this->redirect($this->generateUrl('home') . '#msg_flash');
 
@@ -129,7 +162,7 @@ class TrickController extends AbstractController
 
         return $this->render('category/create.html.twig', [
             'formCategory' => $form->createView(),
-            'editMode' => $this->helper->entityExists($category)
+            'editMode' => $isNewCategory
         ]);
     }
 

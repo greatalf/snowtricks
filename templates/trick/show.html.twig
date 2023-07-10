@@ -30,7 +30,8 @@
 
         <div class="comment_form">
 
-            {{ form_row(formComment.title, {'attr': {'placeholder': 'Le titre de votre commentaire'}}) }}
+{#            {{ form_row(formComment.title, {'attr': {'placeholder': 'Le titre de votre commentaire'}}) }}#}
+            {{ form_start(formComment) }}
             {{ form_row(formComment.content, {'attr': {'placeholder': 'La description de votre commentaire'}}) }}
 
             <button type="submit" class="btn btn-primary">
