@@ -97,10 +97,10 @@ class FigureFixtures extends Fixture
                 $manager->persist($figure);
 
                 //Visuals of figure
-                for ($m = 1; $m <= mt_rand(20, 50); $m++) {
+                for ($m = 1; $m <= 6; $m++) {
                     $visual = new Visual();
 
-                    $visual->setUrl($faker->imageUrl())
+                    $visual->setUrl('https://picsum.photos/400/200')
                         ->setCaption($faker->sentence())
                         ->setFigure($figure);
 

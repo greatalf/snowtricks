@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\VisualRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Form\FormTypeInterface;
 
 /**
  * @ORM\Entity(repositoryClass=VisualRepository::class)
@@ -18,24 +19,25 @@ class Visual
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $url;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $caption;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $visualType;
+    private $visualKind;
 
     /**
      * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="visuals")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private $figure;
+    private $figure = null;
 
     public function getId(): ?int
     {
@@ -66,14 +68,14 @@ class Visual
         return $this;
     }
 
-    public function getVisualType(): ?string
+    public function getVisualKind(): ?string
     {
-        return $this->visualType;
+        return $this->visualKind;
     }
 
-    public function setVisualType(?string $visualType): self
+    public function setVisualKind(?string $visualKind): self
     {
-        $this->visualType = $visualType;
+        $this->visualKind = $visualKind;
 
         return $this;
     }

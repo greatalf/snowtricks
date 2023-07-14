@@ -11,6 +11,14 @@
             {{ figure.content | raw }}
         </div>
         
+        <div class="visuals">
+            {% for visual in figure.visuals %}
+                <div class="visual_img">
+                    <img src="{{ visual.url }}" alt="">
+                </div>
+            {% endfor %}
+        </div>
+
         <div class="comments">
             {% for comment in figure.comments %}
                 <div class="comment_author">

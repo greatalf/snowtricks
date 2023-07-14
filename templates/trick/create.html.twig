@@ -1,5 +1,19 @@
 {% extends 'base.html.twig' %}
-{% form_theme formFigure 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}
+    <h1>
+    {% if editMode %}
+        Modification
+    {% else %}
+        Création
+    {% endif %}
+    d'une figure
+    </h1>
+{% endblock %}
+
+{#{% form_theme form 'bootstrap_4_layout.html.twig' %}#}
+
+{% form_theme form _self %}
 
 {% block body %}
 
@@ -13,12 +27,9 @@
                 d'une figure
         </h1>
 
-        {{ form_start(formFigure) }}
+        {{ form_start(form) }}
 
-        {{ form_row(formFigure.title, {'attr': {'placeholder': 'Le titre de la figure'}}) }}
-        {{ form_row(formFigure.content, {'attr': {'placeholder': 'La description de la figure'}}) }}
-        {{ form_row(formFigure.thumbnail, {'attr': {'placeholder': 'L\'image principale de la figure'}}) }}
-        {{ form_row(formFigure.category) }}
+        {{ form_widget(form) }}
 
         <button type="submit" class="btn btn-primary">
             {% if editMode %}
@@ -28,8 +39,54 @@
             {% endif %}
         </button>
 
-        {{ form_end(formFigure) }}
+        {{ form_end(form) }}
     </div>
 
 
+{% endblock %}
+
+{% block _figure_visuals_widget %}
+    <p>Ajouter vos visuels</p>
+    {{ form_widget(form)  }}
+    <div class="form-group">
+        <button type="button" id="add-visual" class="btn btn-primary">
+            Ajouter un visuel
+        </button>
+    </div>
+{% endblock %}
+
+{% block _figure_visuals_entry_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{%  block _figure_visuals_entry_widget %}
+    <div class="form-group" id="block_{{ id }}">
+        <div class="row">
+            <div class="col-3">
+                {{ form_widget(form.url) }}
+            </div>
+            <div class="col-3">
+                {{ form_widget(form.caption) }}
+            </div>
+            <div class="col-3">
+                {{ form_widget(form.visualKind) }}
+            </div>
+            <div class="col-3">
+                <button type="button" class="del-protoEntry btn btn-danger">X</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#add-visual').on('click', function() {
+            const index = $('#figure_visuals div.form-group').length;
+            const protoEntry = $('#figure_visuals').data('prototype').replace(/__name__/g, index);
+            $('#figure_visuals').append(protoEntry);
+        });
+        $(document).on('click', '.del-protoEntry', function() {
+            $(this).parent().parent().parent().remove()
+        });
+    </script>
 {% endblock %}
