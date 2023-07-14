@@ -2,6 +2,46 @@ html {
     scroll-behavior: smooth;
 }
 
+.absolute-flash {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 9;
+}
+.success-message,
+.danger-message {
+    display: flex;
+    width: 300px;
+    height: 150px;
+    align-items: center;
+    justify-content: center;
+}
+.absolute-flash-close {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #d7d7d7;
+    z-index: 1;
+    font-weight: 700;
+    line-height: 2.3;
+    cursor: pointer;
+
+}
+
+#load-more {
+    display: block;
+    margin: 2em auto;
+}
+
+#back-to-top {
+    margin-left: 90%;
+}
+
 .bg-primary {
     background-color: #375a7f !important;
 }
@@ -15,10 +55,31 @@ html {
     position: absolute;
     width: 50px;
     height: 50px;
-    background-color: black;
+    background-color: #ffffff;
     border-radius: 50%;
     bottom: 80px;
     right: 80px;
+}
+.go_back i {
+    display: flex;
+    width: 25px;
+    height: 25px;
+    margin: auto;
+    font-weight: 900;
+    font-size: 30px;
+    line-height: 1.6;
+}
+.back-to-top {
+    width: 50px;
+    height: 50px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.back-to-top {
+    font-size: 30px;
 }
 
 .top_banner img {

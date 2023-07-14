@@ -12,9 +12,11 @@ use App\Form\CommentType;
 use App\Form\FigureType;
 use App\Form\VisualType;
 use App\Helper\Helper;
+use App\Repository\FigureRepository;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,11 +52,33 @@ class TrickController extends AbstractController
     {
         $repo = $this->registry->getRepository(Figure::class);
 //        $figures = $repo->findAll();
-        $figures = $repo->findBy(array(), array('id' => 'DESC'));
+        $figures = $repo->findBy(array(), array('id' => 'DESC'), '15');
 
         return $this->render('trick/home.html.twig', [
             'figures' => $figures
         ]);
+    }
+
+    /**
+     * @Route("/load-more", name="load_more", methods={"GET"})
+     */
+    public function loadMoreAction(Request $request, FigureRepository $repository)
+    {
+        $limit = 15;
+        $offset = $request->query->get('offset') + 15;
+        $figures = $repository->findBy(array(), array('id' => 'DESC'), $limit, $offset);
+        $FiguresCount = $repository->count([]);
+
+        $tricks = [];
+        foreach ($figures as $figure) {
+            $tricks[] = [
+                'figureId' => $figure->getId(),
+                'figureThumbnail' => $figure->getThumbnail(),
+                'figureTitle' => $figure->getTitle(),
+            ];
+        }
+
+        return $this->json([ 'code' => 200, 'result' => ['action' => 'loadMore', 'limit' => $limit, 'offset' => $offset, 'content' => $tricks, 'totalCount' => $FiguresCount ]], 200);
     }
 
     /**
@@ -181,20 +205,25 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/{id}/delete", name="trick_delete")
      */
-    public function delete($id, EntityManagerInterface $manager): Response
+    public function delete($id, EntityManagerInterface $manager, Request $request): Response
     {
         $figure = $this->registry->getRepository(Figure::class)->find($id);
         $visuals = $figure->getVisuals();
+
+//        dd($request);
 
         // D'abord supprimer les visuals de la figure avant la figure même
         foreach ($visuals as $visual) {
             $manager->remove($visual);
         }
 
+
         $manager->remove($figure);
         $manager->flush();
 
-        return $this->helper->redirectWithFlash('home', 'success', 'La figure a bien été effacée');
+        return $this->json(['code' => 200, 'result' => ['action' => 'delete', 'figure_id' => $id ], 'message' => ['messageType' => 'success', 'messageText' => "La figure a bien été effacée"]], 200);
+
+//        return $this->helper->redirectWithFlash('home', 'success', 'La figure a bien été supprimée');
     }
 
 
