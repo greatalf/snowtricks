@@ -6,9 +6,11 @@ use App\Entity\Comment;
 use App\Entity\Category;
 use App\Entity\Figure;
 use App\Entity\User;
+use App\Entity\Visual;
 use App\Form\CategoryType;
 use App\Form\CommentType;
 use App\Form\FigureType;
+use App\Form\VisualType;
 use App\Helper\Helper;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
@@ -66,10 +68,18 @@ class TrickController extends AbstractController
 
         $form = $this->createForm(FigureType::class, $figure);
 
+//            dd($figure);
         $form->handleRequest($request);
 
         if( $form->isSubmitted() && $form->isValid() )
         {
+            foreach ($figure->getVisuals() as $visual) {
+//                dump($visual);
+                $visual->setFigure($figure);
+                $manager->persist($visual);
+            }
+//            dd($visual);
+
             $slugify = new Slugify();
             $figure->setSlug( $slugify->slugify( $figure->getTitle() ) );
 
@@ -77,6 +87,8 @@ class TrickController extends AbstractController
                 $figure->setCreatedAt(new \DateTime());
 
             $manager->persist($figure);
+
+//            dd($figure);
             $manager->flush();
 
             return $this->redirectToRoute('trick_show', [
@@ -85,7 +97,7 @@ class TrickController extends AbstractController
         }
 
         return $this->render('trick/create.html.twig', [
-            'formFigure' => $form->createView(),
+            'form' => $form->createView(),
             'editMode' => $figure->getId() !== null
         ]);
     }

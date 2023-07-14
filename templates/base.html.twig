@@ -11,10 +11,6 @@
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
-
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
     </head>
     <body>
 
@@ -33,7 +29,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#figures">Tricks</a>
+                        <a class="nav-link" href="{{ path('home') }}#figures">Tricks</a>
                     </li>
                     {% if app.user %}
                         <li class="nav-item">
@@ -53,6 +49,14 @@
         </nav>
 
         {% block body %}{% endblock %}
+
+        <script
+                src="https://code.jquery.com/jquery-3.7.0.min.js"
+                integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+                crossorigin="anonymous"></script>
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
 
         <footer>
             Copyright © {{ "now"|date("Y") }}
