@@ -54,6 +54,8 @@ class TrickController extends AbstractController
 //        $figures = $repo->findAll();
         $figures = $repo->findBy(array(), array('id' => 'DESC'), '15');
 
+//        dd($figures);
+
         return $this->render('trick/home.html.twig', [
             'figures' => $figures
         ]);
@@ -83,7 +85,7 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/trick/create", name="trick_create")
-     * @Route("/trick/{id}/edit", name="trick_edit")
+     * @Route("/trick/{slug}/edit", name="trick_edit")
      */
     public function form(Figure $figure = null, Request $request, EntityManagerInterface $manager): Response
     {
@@ -92,17 +94,14 @@ class TrickController extends AbstractController
 
         $form = $this->createForm(FigureType::class, $figure);
 
-//            dd($figure);
         $form->handleRequest($request);
 
         if( $form->isSubmitted() && $form->isValid() )
         {
             foreach ($figure->getVisuals() as $visual) {
-//                dump($visual);
                 $visual->setFigure($figure);
                 $manager->persist($visual);
             }
-//            dd($visual);
 
             $slugify = new Slugify();
             $figure->setSlug( $slugify->slugify( $figure->getTitle() ) );
@@ -112,11 +111,10 @@ class TrickController extends AbstractController
 
             $manager->persist($figure);
 
-//            dd($figure);
             $manager->flush();
 
             return $this->redirectToRoute('trick_show', [
-                'id' => $figure->getId(),
+                'slug' => $figure->getSlug(),
             ]);
         }
 
@@ -127,12 +125,12 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/trick/details/{id}", name="trick_show")
+     * @Route("/trick/details/{slug}", name="trick_show")
      */
-    public function show($id, Request $request, EntityManagerInterface $manager, Security $security): Response
+    public function show($slug, Request $request, EntityManagerInterface $manager, Security $security): Response
     {
-        $repo = $this->registry->getRepository(Figure::class);
-        $figure = $repo->find($id);
+        $repo = $manager->getRepository(Figure::class);
+        $figure = $repo->findOneBy(['slug' => $slug]);
 
         /**
          * Création du formulaire de commentaire

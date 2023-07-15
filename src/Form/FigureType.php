@@ -20,6 +20,7 @@ class FigureType extends AbstractType
             ->add('title')
             ->add('content')
             ->add('thumbnail')
+            ->add('slug')
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'title',
