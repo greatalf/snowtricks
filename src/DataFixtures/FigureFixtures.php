@@ -76,7 +76,7 @@ class FigureFixtures extends Fixture
 
                 $nb = $faker->numberBetween($min = 1, $max = 3);
                 $title = $faker->sentence($nbWords = $nb, $variableNbWords = true);
-                $title = str_replace('.', '', $title);
+                $title = strtolower(str_replace('.', '', $title));
 
 //                $slug = str_replace(' ', '-', $title);
 //                $slug = str_replace('\'', '-', $slug);
@@ -102,6 +102,7 @@ class FigureFixtures extends Fixture
 
                     $visual->setUrl('https://picsum.photos/400/200')
                         ->setCaption($faker->sentence())
+                        ->setVisualKind('photo')
                         ->setFigure($figure);
 
                     $manager->persist($visual);

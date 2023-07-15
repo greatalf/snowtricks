@@ -4,19 +4,43 @@
 
 {% block body %}
     <article class="container">
-        <img src="{{ figure.thumbnail }}" alt="">
-        <h2>{{ figure.title }}</h2>
-        <div class="metadata">Ecrit le {{ figure.createdAt | date('d/m/Y') }} à {{ figure.createdAt | date('H:i') }} dans la catégorie {{ figure.category.title }}</div>
+        <div class="header_figure_banner">
+            <img src="{{ figure.thumbnail }}" alt="">
+            <h2>{{ figure.title }}</h2>
+        </div>
+
+        <div class="visuals">
+            {% for visual in figure.visuals %}
+                <div class="visual_media">
+                    {% if visual.visualKind == 'video'  %}
+                        {{ visual.url | formatVideo }}
+                    {% else  %}
+                        <img src="{{ visual.url }}" alt="">
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
         <div class="content"><img src="" alt="">
             {{ figure.content | raw }}
         </div>
-        
-        <div class="visuals">
-            {% for visual in figure.visuals %}
-                <div class="visual_img">
-                    <img src="{{ visual.url }}" alt="">
-                </div>
-            {% endfor %}
+
+        <div class="metadata">Ecrit le {{ figure.createdAt | date('d/m/Y') }} à {{ figure.createdAt | date('H:i') }} dans la catégorie {{ figure.category.title }}</div>
+
+        <div class="comment_form">
+
+            {{ form_start(formComment) }}
+            {{ form_row(formComment.content, {'attr': {'placeholder': 'La description de votre commentaire'}}) }}
+
+            <button type="submit" class="btn btn-primary">
+                {% if editMode %}
+                    Enregistrer la modification
+                {% else %}
+                    Ajouter le commentaire
+                {% endif %}
+            </button>
+
+            {{ form_end(formComment) }}
         </div>
 
         <div class="comments">
@@ -34,23 +58,6 @@
 
                 </div>
             {% endfor %}
-        </div>
-
-        <div class="comment_form">
-
-{#            {{ form_row(formComment.title, {'attr': {'placeholder': 'Le titre de votre commentaire'}}) }}#}
-            {{ form_start(formComment) }}
-            {{ form_row(formComment.content, {'attr': {'placeholder': 'La description de votre commentaire'}}) }}
-
-            <button type="submit" class="btn btn-primary">
-                {% if editMode %}
-                    Enregistrer la modification
-                {% else %}
-                    Ajouter le commentaire
-                {% endif %}
-            </button>
-
-            {{ form_end(formComment) }}
         </div>
 
     </article>

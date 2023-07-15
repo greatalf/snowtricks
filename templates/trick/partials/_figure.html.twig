@@ -1,13 +1,13 @@
-<div id="figure__{{ figure.id }}" class="card" style="width:300px">
-    <a href="{{ path("trick_show", { id: figure.id }) }}">
+<div id="figure__{{ figure.id }}" class="figure_card" style="width:300px">
+    <a href="{{ path("trick_show", { slug: figure.slug }) }}">
         <img class="card-img-top" src="{{ figure.thumbnail }}" alt="Card image">
     </a>
     <div class="card-body trick_card">
-        <a href="{{ path("trick_show", { id: figure.id }) }}">
+        <a href="{{ path("trick_show", { slug: figure.slug }) }}">
             <h6 class="card-title">{{ figure.title }}</h6>
         </a>
         <div class="edit_trash" data-trick-id="{{ figure.id }}">
-            <a href="{{ path("trick_edit", { id: figure.id }) }}" class="edit-button"><i class="fa-solid fa-pen"></i></a>
+            <a href="{{ path("trick_edit", { slug: figure.slug }) }}" class="edit-button"><i class="fa-solid fa-pen"></i></a>
             <a href="{{ path("trick_delete", { id: figure.id }) }}" class="delete-button"><i class="fa-solid fa-trash-can"></i></a>
         </div>
     </div>
