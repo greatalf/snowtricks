@@ -3,8 +3,12 @@
 {% block title %}Trick single{% endblock %}
 
 {% block body %}
-    <article class="container">
+    <article class="container singleTrick" data-trick-id="{{ figure.id }}">
         <div class="header_figure_banner">
+            <div class="edit_trash">
+                <a href="/trick/{{ figure.id }}/edit" class="edit-button"><i class="fa-solid fa-pen"></i></a>
+                <a href="/trick/{{ figure.id }}/delete" class="delete-button"><i class="fa-solid fa-trash-can"></i></a>
+            </div>
             <img src="{{ figure.thumbnail }}" alt="">
             <h2>{{ figure.title }}</h2>
         </div>
@@ -46,11 +50,13 @@
         <div class="comments">
             {% for comment in figure.comments %}
                 <div class="comment_author">
-                    <div class="avatar_author">
-                        <img src="{{ comment.author.avatar }}" alt="">
-                    </div>
-                    <div class="fullname_author">
-                        {{ comment.author.firstName }} {{ comment.author.lastName }}
+                    <div class="author_details">
+                        <div class="avatar_author">
+                            <img src="{{ comment.author.avatar }}" alt="">
+                        </div>
+                        <div class="fullname_author">
+                            {{ comment.author.firstName }} {{ comment.author.lastName }}
+                        </div>
                     </div>
                     <div class="content_comment">
                         {{ comment.content | raw }}

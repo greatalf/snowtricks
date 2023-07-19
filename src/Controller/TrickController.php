@@ -201,6 +201,25 @@ class TrickController extends AbstractController
     }
 
     /**
+     * @Route("/trick/{id}/ajaxdelete", name="trick_ajax_delete")
+     */
+    public function ajaxDelete($id, EntityManagerInterface $manager, Request $request): Response
+    {
+        $figure = $this->registry->getRepository(Figure::class)->find($id);
+        $visuals = $figure->getVisuals();
+
+        // D'abord supprimer les visuals de la figure avant la figure même
+        foreach ($visuals as $visual) {
+            $manager->remove($visual);
+        }
+
+        $manager->remove($figure);
+        $manager->flush();
+
+        return $this->json(['code' => 200, 'result' => ['action' => 'delete', 'figure_id' => $id ], 'message' => ['messageType' => 'success', 'messageText' => "La figure a bien été effacée"]], 200);
+    }
+
+    /**
      * @Route("/trick/{id}/delete", name="trick_delete")
      */
     public function delete($id, EntityManagerInterface $manager, Request $request): Response
@@ -208,20 +227,15 @@ class TrickController extends AbstractController
         $figure = $this->registry->getRepository(Figure::class)->find($id);
         $visuals = $figure->getVisuals();
 
-//        dd($request);
-
         // D'abord supprimer les visuals de la figure avant la figure même
         foreach ($visuals as $visual) {
             $manager->remove($visual);
         }
 
-
         $manager->remove($figure);
         $manager->flush();
 
-        return $this->json(['code' => 200, 'result' => ['action' => 'delete', 'figure_id' => $id ], 'message' => ['messageType' => 'success', 'messageText' => "La figure a bien été effacée"]], 200);
-
-//        return $this->helper->redirectWithFlash('home', 'success', 'La figure a bien été supprimée');
+        return $this->helper->redirectWithFlash('home', 'success', 'La figure a bien été supprimée');
     }
 
 

@@ -125,6 +125,16 @@ footer {
     width: 100%;
     position: relative;
 }
+.header_figure_banner .edit_trash {
+    position: absolute;
+    background-color: #ffffff;
+    width: 60px;
+    right: 10px;
+    top: 10px;
+    text-align: center;
+    border: 2px solid #000000;
+    border-radius: 3px;
+}
 .header_figure_banner img {
     width: 100%;
 }
@@ -151,3 +161,34 @@ footer {
     max-height: 100px;
     margin: auto;
 }
+
+
+.comment_form {
+    margin: 5em auto;
+}
+.comment_author {
+    display: flex;
+    margin-bottom: 30px ;
+}
+.avatar_author img {
+    border-radius: 50%;
+}
+.content_comment {
+    display: flex;
+    padding: 30px;
+    margin-left: 2em;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 7px;
+    border: 1px solid #efefef;
+}
+.fullname_author {
+    font-size: .8em;
+    text-align: center;
+}
+.author_details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
