@@ -78,8 +78,6 @@ class FigureFixtures extends Fixture
                 $title = $faker->sentence($nbWords = $nb, $variableNbWords = true);
                 $title = strtolower(str_replace('.', '', $title));
 
-//                $slug = str_replace(' ', '-', $title);
-//                $slug = str_replace('\'', '-', $slug);
                 $slug = $this->slugger->slug($title);
 
                 $figure = new Figure();
@@ -97,7 +95,7 @@ class FigureFixtures extends Fixture
                 $manager->persist($figure);
 
                 //Visuals of figure
-                for ($m = 1; $m <= 6; $m++) {
+                for ($m = 1; $m <= 5; $m++) {
                     $visual = new Visual();
 
                     $visual->setUrl('https://picsum.photos/400/200')
