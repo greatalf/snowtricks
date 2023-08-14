@@ -31,21 +31,23 @@
 
         <div class="metadata">Ecrit le {{ figure.createdAt | date('d/m/Y') }} à {{ figure.createdAt | date('H:i') }} dans la catégorie {{ figure.category.title }}</div>
 
-        <div class="comment_form">
+        {% if( app.user ) %}
+            <div class="comment_form">
 
-            {{ form_start(formComment) }}
-            {{ form_row(formComment.content, {'attr': {'placeholder': 'La description de votre commentaire'}}) }}
+                {{ form_start(formComment) }}
+                {{ form_row(formComment.content, {'attr': {'placeholder': 'La description de votre commentaire'}}) }}
 
-            <button type="submit" class="btn btn-primary">
-                {% if editMode %}
-                    Enregistrer la modification
-                {% else %}
-                    Ajouter le commentaire
-                {% endif %}
-            </button>
+                <button type="submit" class="btn btn-primary">
+                    {% if editMode %}
+                        Enregistrer la modification
+                    {% else %}
+                        Ajouter le commentaire
+                    {% endif %}
+                </button>
 
-            {{ form_end(formComment) }}
+                {{ form_end(formComment) }}
         </div>
+        {% endif %}
 
         <div class="comments">
             {% for comment in figure.comments %}

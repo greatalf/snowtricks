@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\VisualRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=VisualRepository::class)
@@ -20,6 +21,7 @@ class Visual
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank
      */
     private $url;
 
